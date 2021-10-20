@@ -1,5 +1,6 @@
 {
-  "name": "@twitter/simple-formatter-benlu",
+  "name": "simple-formatter",
+  "version": "1.0.0",
   "bin": {
     "simple-format": "bin.js"
   },
