@@ -52,6 +52,7 @@ export function formatter(input: string): string {
   // commas: no space before, space after
   // operators: space before and after
 }
+
 function invert(object: typeof Bracket): { [k: string]: Bracket | undefined } {
   return Object.entries(object).reduce(
     (acc, [_, value]) => ({
@@ -61,7 +62,20 @@ function invert(object: typeof Bracket): { [k: string]: Bracket | undefined } {
     {}
   );
 }
+
+const openBrackets = new Set(["(", "[", "{", "<"]);
+enum Bracket {
+  openParen = "(",
+  closeParen = ")",
+  openSquare = "[",
+  closeSquare = "]",
+  openBrace = "{",
+  closeBrace = "}",
+  openAngle = "<",
+  closeAngle = ">",
+}
 const bracketMap = invert(Bracket);
+
 function stringToItems(input: string): Item[] {
   return input.split("").reduce((a, n) => {
     const bracket = bracketMap[n];
@@ -80,6 +94,7 @@ function stringToItems(input: string): Item[] {
     return a;
   }, [] as Item[]);
 }
+
 function getMatchingBracketIndex(items: Item[], idx: number) {
   let counter = 1;
   let i = idx + 1;
@@ -98,6 +113,7 @@ function getMatchingBracketIndex(items: Item[], idx: number) {
   }
   return i;
 }
+
 function adjustEndIndexIfNotEnclosed(
   isEnclosed: boolean,
   items: Item[],
@@ -113,6 +129,7 @@ function adjustEndIndexIfNotEnclosed(
   }
   return i - 2;
 }
+
 function getItemText(
   items: Item[],
   startIndex: number,
@@ -138,17 +155,6 @@ type TextItem = {
 //   type: "operator";
 //   value: Operator;
 // };
-const openBrackets = new Set(["(", "[", "{", "<"]);
-enum Bracket {
-  openParen = "(",
-  closeParen = ")",
-  openSquare = "[",
-  closeSquare = "]",
-  openBrace = "{",
-  closeBrace = "}",
-  openAngle = "<",
-  closeAngle = ">",
-}
 type BracketItem = {
   type: "bracket";
   value: Bracket;
